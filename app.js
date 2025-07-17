@@ -4,12 +4,9 @@ const express = require("express"),
     LocalStrategy = require("passport-local"),
     passportLocalMongoose =
         require("passport-local-mongoose");
-        const cors = require('cors');
 const User = require("./model/User");
 var path = require('path');
 let app = express();
-app.use(cors());
-app.use(express.json());
 
 mongoose.connect("mongodb+srv://kburchett11:Final246@loginsystem.9kr2lp0.mongodb.net/?retryWrites=true&w=majority&appName=LoginSystem");
 
@@ -28,17 +25,17 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.engine('html', require('ejs').renderFile);
-const publicPath = path.join(__dirname, 'public'); 
-app.use(express.static(publicPath));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'views')));
 
 // Showing home page
 app.get("/", function (req, res) {
-    res.render("index.html");
+    res.render("home");
 });
 
 // Showing register form
 app.get("/register", function (req, res) {
-    res.render("register.html");
+    res.render("register");
 });
 
 // Handling user signup
@@ -53,7 +50,7 @@ app.post("/register", async (req, res) => {
 
 // Showing login form
 app.get("/login", function (req, res) {
-    res.render("login.html");
+    res.render("login");
 });
 
 // Handling user login
@@ -63,7 +60,7 @@ app.post("/login", async function (req, res) {
         if (user) {
             const result = req.body.password === user.password;
             if (result) {
-                res.render("student_dashboard.html");
+                res.render("student_dashboard");
             } else {
                 res.status(400).json({ error: "password doesn't match" });
             }
@@ -84,31 +81,22 @@ app.get("/logout", function (req, res) {
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) return next();
-    res.redirect("/view/student_dashboard.html");
+    res.redirect("/view/student_dashboard");
 }
 
 app.get("/student_view_schedule", function (req, res) {
-    res.render("student_view_schedule.html");
+    res.render("student_view_schedule");
 });
 
 app.get("/student_dashboard", function (req, res) {
-    res.render("student_dashboard.html");
+    res.render("student_dashboard");
 });
 
 app.get("/student_manage_courses", function (req, res) {
-    res.render("student_manage_courses.html");
-});
-
-app.get('/api/data', (req, res) => {
-  res.json({ message: 'Data from backend!' });
+    res.render("student_manage_courses");
 });
 
 let port = process.env.PORT || 3000;
 app.listen(port, function () {
     console.log("Server Has Started!");
 });
-
-app.listen(port, () => {
-  console.log(`Backend listening at http://localhost:${port}`);
-});
-
