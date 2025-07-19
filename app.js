@@ -13,7 +13,7 @@ var path = require('path');
 let app = express();
 
 const corsOptions = {
-    origin: 'https://lboalich.github.io/SDEV_255_Final_Project_Group2/'
+    origin: '*'
 };
 
 app.use(cors(corsOptions));
