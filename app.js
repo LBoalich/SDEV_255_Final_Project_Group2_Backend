@@ -4,9 +4,20 @@ const express = require("express"),
     LocalStrategy = require("passport-local"),
     passportLocalMongoose =
         require("passport-local-mongoose");
+
+// we have to use cors in order to host a front end and backend on the same device
+var cors = require("cors")
+
 const User = require("./model/User");
 var path = require('path');
 let app = express();
+
+const corsOptions = {
+    origin: '*'
+};
+
+app.use(cors(corsOptions));
+const router = express.Router();
 
 mongoose.connect("mongodb+srv://kburchett11:Final246@loginsystem.9kr2lp0.mongodb.net/?retryWrites=true&w=majority&appName=LoginSystem");
 
@@ -84,36 +95,6 @@ function isLoggedIn(req, res, next) {
     res.redirect("/view/student_dashboard");
 }
 
-
-// Showing login form
-app.get("/teacher_login", function (req, res) {
-    res.render("teacher_login");
-});
-
-// Handling user login
-app.post("/teacher_login", async function (req, res) {
-    try {
-        const user = await User.findOne({ username: req.body.username });
-        if (user) {
-            const result = req.body.password === user.password;
-            if (result) {
-                res.render("teacher_dashboard");
-            } else {
-                res.status(400).json({ error: "password doesn't match" });
-            }
-        } else {
-            res.status(400).json({ error: "User doesn't exist" });
-        }
-    } catch (error) {
-        res.status(400).json({ error });
-    }
-});
-
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) return next();
-    res.redirect("/view/teacher_dashboard");
-}
-
 app.get("/student_view_schedule", function (req, res) {
     res.render("student_view_schedule");
 });
@@ -142,7 +123,31 @@ app.get("/teacher_manage_courses", function (req, res) {
     res.render("teacher_manage_courses");
 });
 
+
+// making an api using routes
+router.get('/course_index', (req, res) => {
+    const courses = [
+        {
+            name: "Website Development", 
+            subject: "Computer Science", 
+            credits: 3, 
+            description: "Full-stack website development class using HTML, CSS, Javascript, Bootstrapt, React, Node.js with server deployment."
+        },
+        {
+            name: "Content Management Systems", 
+            subject: "Computer Science", 
+            credits: 3, 
+            description: "Use Wordpress and Webflow to understand Content Management Systems."
+        }
+    ];
+
+    res.json(courses);
+});
+
+// all requests that usually use an api start with /api
+app.use("/api", router);
+
 let port = process.env.PORT || 3000;
 app.listen(port, function () {
-    console.log("Server Has Started!");
+    console.log(`Server Has Started!  port:${port}`);
 });
