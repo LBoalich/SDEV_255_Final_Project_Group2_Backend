@@ -107,6 +107,23 @@ app.get("/student_manage_courses", function (req, res) {
     res.render("student_manage_courses");
 });
 
+app.get("/teacher_login", function (req, res) {
+    res.render("teacher_login");
+});
+
+app.get("/teacher_dashboard", function (req, res) {
+    res.render("teacher_dashboard");
+});
+
+app.get("/add_course", function (req, res) {
+    res.render("add_course");
+});
+
+app.get("/teacher_manage_courses", function (req, res) {
+    res.render("teacher_manage_courses");
+});
+
+
 // making an api using routes
 router.get('/course_index', (req, res) => {
     const courses = [

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Course Registration!</title>
+    <link rel="stylesheet" type="text/css" href="login.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+<div class="flexwrap">
+
+<div class="navbar">
+<ul>
+<li><a class="active" href="/teacher_dashboard">Home</a></li>
+<li class="dropdown">
+    <a href="javascript:void(0)" class="dropbtn">Course <i class="bi bi-arrow-down-short"></i></a>
+    <div class="dropdown-content">
+      <a href="/add_course">Create a Course</a>
+      <a href="/teacher_dashboard">View Courses</a>
+      <a href="/teacher_manage_courses">Manage Student Courses</a>
+      </div>
+  </li>
+<li><a href="/">Sign Out</a></li>
+</ul>
+</div>
+
+<body>
+    <div class="wrapper">
+        <h1>Teacher Dashboard</h1>
+        <button type="submit" class="dashbtn"> <a href="/add_course">Create a Course</a></button>
+        <button type="submit" class="dashbtn"> <a href="/teacher_dashboard">View Courses</a></button>
+        <button type="submit" class="dashbtn"> <a href="/teacher_manage_courses">Manage Student Courses</a></button>
+        <button type="submit" class="dashbtn"> <a href="/">Log Out</a></button>
+    </div>
+
+    <div class="content">
+        
+    </div>
+    
+</body>
+</div>
+</html>
