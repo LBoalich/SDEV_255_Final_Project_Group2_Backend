@@ -4,9 +4,20 @@ const express = require("express"),
     LocalStrategy = require("passport-local"),
     passportLocalMongoose =
         require("passport-local-mongoose");
+
+// we have to use cors in order to host a front end and backend on the same device
+var cors = require("cors")
+
 const User = require("./model/User");
 var path = require('path');
 let app = express();
+
+const corsOptions = {
+    origin: 'https://lboalich.github.io/SDEV_255_Final_Project_Group2/'
+};
+
+app.use(cors(corsOptions));
+const router = express.Router();
 
 mongoose.connect("mongodb+srv://kburchett11:Final246@loginsystem.9kr2lp0.mongodb.net/?retryWrites=true&w=majority&appName=LoginSystem");
 
@@ -96,7 +107,30 @@ app.get("/student_manage_courses", function (req, res) {
     res.render("student_manage_courses");
 });
 
+// making an api using routes
+router.get('/course_index', (req, res) => {
+    const courses = [
+        {
+            name: "Website Development", 
+            subject: "Computer Science", 
+            credits: 3, 
+            description: "Full-stack website development class using HTML, CSS, Javascript, Bootstrapt, React, Node.js with server deployment."
+        },
+        {
+            name: "Content Management Systems", 
+            subject: "Computer Science", 
+            credits: 3, 
+            description: "Use Wordpress and Webflow to understand Content Management Systems."
+        }
+    ];
+
+    res.json(courses);
+});
+
+// all requests that usually use an api start with /api
+app.use("/api", router);
+
 let port = process.env.PORT || 3000;
 app.listen(port, function () {
-    console.log("Server Has Started!");
+    console.log(`Server Has Started!  port:${port}`);
 });
