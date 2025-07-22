@@ -53,7 +53,8 @@ app.get("/register", function (req, res) {
 app.post("/register", async (req, res) => {
     const user = await User.create({
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password,
+        teacherInputBox: req.body.teacherInputBox
     });
 
     return res.status(200).json(user);
@@ -71,6 +72,10 @@ app.post("/login", async function (req, res) {
         if (user) {
             const result = req.body.password === user.password;
             if (result) {
+                const teacherId = user.teacherInputBox === "pass";
+                if (teacherId) {
+                    res.status(400).json({ error: "User is a teacher, please use teacher login" })
+                }
                 res.render("student_dashboard");
             } else {
                 res.status(400).json({ error: "password doesn't match" });
@@ -93,6 +98,43 @@ app.get("/logout", function (req, res) {
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) return next();
     res.redirect("/view/student_dashboard");
+}
+
+
+// Showing login form
+app.get("/teacher_login", function (req, res) {
+    res.render("teacher_login");
+});
+
+// Handling user login
+app.post("/teacher_login", async function (req, res) {
+    try {
+        const user = await User.findOne({ username: req.body.username });
+        if (user) {
+            const result = req.body.password === user.password;
+            if (result) {
+                const teacherId = user.teacherInputBox === "pass";
+                if (teacherId) {
+                    res.render("teacher_dashboard");
+                }
+                else{
+                    res.status(400).json({ error: "not a teacher" });
+                }
+            }
+             else {
+                res.status(400).json({ error: "password doesn't match" });
+            }
+        } else {
+            res.status(400).json({ error: "User doesn't exist" });
+        }
+    } catch (error) {
+        res.status(400).json({ error });
+    }
+});
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) return next();
+    res.redirect("/view/teacher_dashboard");
 }
 
 app.get("/student_view_schedule", function (req, res) {
