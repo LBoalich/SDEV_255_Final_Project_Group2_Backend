@@ -18,6 +18,30 @@
         <div class="input-box">
         <input type="password" name="password" placeholder="Password">
         </div>
+        <div>
+            <input type="checkbox" id="teacherValueBox" onclick="toggleInputBox()">
+            <label for="teacherValueBox">I'm a teacher</label>
+
+            <input type="text" id="teacherInputBox" name="teacherInputBox" style="display: none;" placeholder="Enter teacher key:">
+
+            <script>
+            function toggleInputBox() {
+                var teacherValueBox = document.getElementById("teacherValueBox");
+                var teacherInputBox = document.getElementById("teacherInputBox");
+
+                if (teacherValueBox.checked == true){
+                    teacherInputBox.style.display = "block";
+                } else {
+                    teacherInputBox.style.display = "none";
+                }
+            }
+
+            if (teacherInputBox === 'pass') {
+                teacherId = "Teacher"
+            }
+            </script>
+
+        </div>
         <button class="btn">Submit</button>
     </form>
 
