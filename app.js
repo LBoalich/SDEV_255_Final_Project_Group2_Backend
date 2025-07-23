@@ -57,7 +57,7 @@ app.post("/register", async (req, res) => {
         teacherInputBox: req.body.teacherInputBox
     });
 
-    return res.status(200).json(user);
+    res.render("register");
 });
 
 // Showing login form
@@ -75,16 +75,24 @@ app.post("/login", async function (req, res) {
                 const teacherId = user.teacherInputBox === "pass";
                 if (teacherId) {
                     res.status(400).json({ error: "User is a teacher, please use teacher login" })
+                    
+                    return;
                 }
                 res.render("student_dashboard");
             } else {
                 res.status(400).json({ error: "password doesn't match" });
+
+                return;
             }
         } else {
             res.status(400).json({ error: "User doesn't exist" });
+
+            return;
         }
     } catch (error) {
         res.status(400).json({ error });
+
+        return;
     }
 });
 
@@ -119,16 +127,24 @@ app.post("/teacher_login", async function (req, res) {
                 }
                 else{
                     res.status(400).json({ error: "not a teacher" });
+
+                    return;
                 }
             }
              else {
                 res.status(400).json({ error: "password doesn't match" });
+
+                return;
             }
         } else {
             res.status(400).json({ error: "User doesn't exist" });
+
+            return;
         }
     } catch (error) {
         res.status(400).json({ error });
+
+        return;
     }
 });
 
