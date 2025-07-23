@@ -11,12 +11,12 @@
     <div class="wrapper">
     <h1> Sign up form </h1>
 
-    <form action="/register" method="POST">
+    <form action="/register" method="POST" onsubmit="window.alert('User Created!')">
         <div class="input-box">
-        <input type="text" name="username" placeholder="Username">
+        <input type="text" name="username" placeholder="Username" required>
         </div>
         <div class="input-box">
-        <input type="password" name="password" placeholder="Password">
+        <input type="password" name="password" placeholder="Password" required>
         </div>
         <div>
             <input type="checkbox" id="teacherValueBox" onclick="toggleInputBox()">
