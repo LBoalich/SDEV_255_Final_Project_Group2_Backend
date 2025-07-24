@@ -15,6 +15,7 @@
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "express-session": "^1.18.2",
+    "memorystore": "^1.6.7",
     "mongodb": "^6.17.0",
     "mongoose": "^8.16.4",
     "passport": "^0.7.0",

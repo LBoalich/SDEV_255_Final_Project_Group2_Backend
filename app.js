@@ -11,13 +11,20 @@ let app = express();
 
 mongoose.connect("mongodb+srv://kburchett11:Final246@loginsystem.9kr2lp0.mongodb.net/?retryWrites=true&w=majority&appName=LoginSystem");
 
+const session = require('express-session')
+const MemoryStore = require('memorystore')(session)
+
+app.use(session({
+    cookie: { maxAge: 86400000 },
+    store: new MemoryStore({
+      checkPeriod: 86400000
+    }),
+    resave: false,
+    secret: 'Group 2'
+}))
+
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
-app.use(require("express-session")({
-    secret: "Group 2 Final",
-    resave: false,
-    saveUninitialized: false
-}));
 
 app.use(passport.initialize());
 app.use(passport.session());

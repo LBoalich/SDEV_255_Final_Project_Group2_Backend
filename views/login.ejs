@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 <body>
-    <script src="../app.js"></script>
+    <script src="D:\kalee\School\WebAppDev\Final Test\app.js"></script>
     <div class="wrapper">
-        <form id="loginForm" method="POST" action="/login">
+        <form id="loginForm" method="POST" action="/login" autocomplete="off" onsubmit="storeUser()">
             <h1>Student Login</h1>
             <div class="input-box">
-                 <label for="username"></label><input type="text" name="username" placeholder="Username" required><i class="bi bi-person-fill"></i>
+                 <label for="username"></label><input type="text" id="userInput" name="username" placeholder="Username" required><i class="bi bi-person-fill"></i>
             </div>
 
             <div class="input-box">
@@ -22,8 +22,6 @@
 
             <button type="submit" class="btn">Login</button>
             </form>
-
-            <div id="logError" style="color: red;"></div>
 
             <div class="register-link">
                 <p>Don't have an account? <a href="/register">Sign up!</a></p>
@@ -35,6 +33,13 @@
     </div>
 
     <div class="content">
+
+        <script>
+            function storeUser(){
+                var name = document.getElementById("userInput").value;
+                window.localStorage.setItem("user", name);
+            }
+        </script>
         
     </div>
     
