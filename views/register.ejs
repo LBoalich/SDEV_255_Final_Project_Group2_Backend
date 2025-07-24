@@ -7,16 +7,16 @@
     <title>Document</title>
 </head>
 <body>
-    <script src="../app.js"></script>
+    <script src="D:\kalee\School\WebAppDev\Final Test\app.js"></script>
     <div class="wrapper">
     <h1> Sign up form </h1>
 
-    <form action="/register" method="POST" onsubmit="window.alert('User Created!')">
+    <form action="/register" autocomplete="off" method="POST">
         <div class="input-box">
-        <input type="text" name="username" placeholder="Username" required>
+        <input type="text" name="username" placeholder="Username">
         </div>
         <div class="input-box">
-        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" name="password" placeholder="Password">
         </div>
         <div>
             <input type="checkbox" id="teacherValueBox" onclick="toggleInputBox()">
@@ -34,10 +34,6 @@
                 } else {
                     teacherInputBox.style.display = "none";
                 }
-            }
-
-            if (teacherInputBox === 'pass') {
-                teacherId = "Teacher"
             }
             </script>
 
