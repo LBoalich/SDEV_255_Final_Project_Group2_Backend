@@ -171,6 +171,16 @@ app.get("/teacher_manage_courses", function (req, res) {
     res.render("teacher_manage_courses");
 });
 
+// show student course index
+app.get("/student_course_index", function (req, res) {
+    res.render("student_course_index");
+});
+
+// show teacher course index
+app.get("teacher_course_index", function (req, res) {
+    res.render("teacher_course_index");
+});
+
 let port = process.env.PORT || 3000;
 app.listen(port, function () {
     console.log(`Server Has Started!  port:${port}`);
