@@ -184,7 +184,7 @@ app.get("/student_course_index", function (req, res) {
 });
 
 // show teacher course index
-app.get("teacher_course_index", function (req, res) {
+app.get("/teacher_course_index", function (req, res) {
     res.render("teacher_course_index");
 });
 
