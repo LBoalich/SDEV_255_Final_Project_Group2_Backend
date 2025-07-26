@@ -24,7 +24,10 @@
 
 <body>
     <h2>College Course Registration</h2>
-    <div id="formContainer">
+
+    <!-- This all needed converted to a form to be able to get called into the Mongo DB... The form div below is a cleaner more usesul version
+
+      <div id="formContainer">
         <label for="courseNameInput">
             Course Name:
         </label>
@@ -43,95 +46,45 @@
         <input type="number" id="creditInput" placeholder="Enter Number of Credits..."></textarea>
         <br>
         <button onclick="addData()">Add</button>
+    </div> -->
+
+
+    <form class="formalign" action="/add_course" method="POST" onsubmit="clearFormAfterSubmit()">
+        <input type="text",
+               name="courseName",
+               placeholder="Enter the Course Name",
+               required>
+        
+        <input type="text",
+               name="courseDescription",
+               placeholder="Enter the Course Description"
+               required>
+
+        <input type="text",
+               name="courseSubject",
+               placeholder="Enter the Course Subject",
+               required>
+
+        <input type="number",
+               name="courseCredit",
+               placeholder="Enter the Course Credit Amount",
+               required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Displays all courses in the MongoDB or displays "No courses found" if database is empty -->
+    <div style="white-space: pre-wrap;">
+        <% if (message && message.length > 0) { %>
+            <h2>Existing Courses</h2>
+            <ul class="coursecontent" style="background-color: transparent;">
+                <% message.forEach(function(course) { %>
+                    <li> <%= course.courseName %> - <%= course.courseDescription %> - <%= course.courseSubject %> - <%= course.courseCredit %> </li>
+                    <% }); %>
+            </ul>
+        <% } else { %>
+                <p>No courses found.</p>
+            <% } %>
     </div>
-
-    <table id="outputTable">
-        <tr>
-            <th>Course Name</th>
-            <th>Description</th>
-            <th>Subject</th>
-            <th>Credits</th>
-            <th>Actions</th>
-        </tr>
-    </table>
-
-    <script>
-        function addData() {
-            // Get input values
-            let courseName = document.getElementById("courseNameInput").value;
-            let description = document.getElementById("descriptionInput").value;
-            let subjectArea = document.getElementById("subjectAreaInput").value;
-            let credit = document.getElementById("creditInput").value;
-
-            // Get the table and insert a new row at the end
-            let table = document.getElementById("outputTable");
-            let newRow = table.insertRow(table.rows.length);
-
-            // Insert data into cells of the new row
-            newRow.insertCell(0).innerHTML = courseName;
-            newRow.insertCell(1).innerHTML = description;
-            newRow.insertCell(2).innerHTML = subjectArea;
-            newRow.insertCell(3).innerHTML = credit;
-            newRow.insertCell(4).innerHTML =
-                '<button onclick="editData(this)">Edit</button>' +
-                '<button onclick="deleteData(this)">Delete</button>';
-
-            // Clear input fields
-            clearInputs();
-        }
-
-        function editData(button) {
-
-            // Get the parent row of the clicked button
-            let row = button.parentNode.parentNode;
-
-            // Get the cells within the row
-            let courseNameCell = row.cells[0];
-            let descriptionCell = row.cells[1];
-            let subjectAreaCell = row.cells[2];
-            let creditCell = row.cells[3];
-
-            // Prompt the user to enter updated values
-            let courseNameInput =
-                prompt("Enter the updated Course Name:",
-                    courseNameCell.innerHTML);
-            let descriptionInput =
-                prompt("Enter the updated Course Description:",
-                    descriptionCell.innerHTML);
-            let subjectAreaInput =
-                prompt("Enter the updated Subject Area:",
-                    subjectAreaCell.innerHTML
-                );
-            let creditInput =
-                prompt("Enter the updated Credit Amount:",
-                    creditCell.innerHTML
-                );
-
-            // Update the cell contents with the new values
-            courseNameCell.innerHTML = courseNameInput;
-            descriptionCell.innerHTML = descriptionInput;
-            subjectAreaCell.innerHTML = subjectAreaInput;
-            creditCell.innerHTML = creditInput;
-        }
-
-        function deleteData(button) {
-
-            // Get the parent row of the clicked button
-            let row = button.parentNode.parentNode;
-
-            // Remove the row from the table
-            row.parentNode.removeChild(row);
-        }
-
-        function clearInputs() {
-
-            // Clear input fields
-            document.getElementById("courseNameInput").value = "";
-            document.getElementById("descriptionInput").value = "";
-            document.getElementById("subjectAreaInput").value = "";
-            document.getElementById("creditInput").value = "";
-        }
-    </script>
 </body>
 
 </html>

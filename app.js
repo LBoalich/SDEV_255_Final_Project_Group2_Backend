@@ -6,6 +6,7 @@ const express = require("express"),
         require("passport-local-mongoose");
 
 const User = require("./model/User");
+const Course = require("./model/Courses");
 var path = require('path');
 let app = express();
 
@@ -43,18 +44,28 @@ app.get("/", function (req, res) {
 
 // Showing register form
 app.get("/register", function (req, res) {
-    res.render("register");
+    res.render('register', { message: "" });
 });
 
 // Handling user signup
 app.post("/register", async (req, res) => {
+    try{
     const user = await User.create({
         username: req.body.username,
         password: req.body.password,
         teacherInputBox: req.body.teacherInputBox
     });
+}
+catch (error) {
+    if (error.code === 11000) {
+            res.render('register', { message: "Username is taken, please select another" });
+            return
+    } else {
+        console.error('Duplicate key error:', error);
+    }
+}
 
-    res.render("register");
+    res.render('register', { message: "" });
 });
 
 // Showing login form
@@ -170,8 +181,30 @@ app.get("/teacher_dashboard", function (req, res) {
     res.render("teacher_dashboard");
 });
 
-app.get("/add_course", function (req, res) {
-    res.render("add_course");
+
+// Previously added render function for /add_course
+
+//app.get("/add_course", function (req, res) {
+//    res.render("add_course");
+//});
+
+
+// Logs entered course info from /add_course to MongoDB and sends a message to the ejs returning all variables in the MongoDB
+
+app.get("/add_course", async (req, res) => {
+    const courses = await Course.find({});
+    res.render('add_course', { message: courses });
+    });
+
+app.post("/add_course", async (req,res) =>{
+    const course = await Course.create({
+        courseName: req.body.courseName,
+        courseDescription: req.body.courseDescription,
+        courseSubject: req.body.courseSubject,
+        courseCredit: req.body.courseCredit
+    });
+    const courses = await Course.find({});
+    res.render('add_course', { message: courses });
 });
 
 app.get("/teacher_manage_courses", function (req, res) {
