@@ -7,7 +7,7 @@
 
 body {
     min-height: 100vh;
-    background: url(assets/background.jpg) no-repeat;
+    background: url(assets/background.jpg) repeat;
     background-size: cover;
     background-position: center;
     display: flex;
@@ -89,11 +89,52 @@ li.dropdown {
 }
 
 #courseList {
-    margin: 100px;
-    background-color: white;
-    border-radius: 10px;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 #course {
     margin: 30px;
+    padding: 20px;
+    background-color: #c9d431;
+    border-radius: 10px;
+    width: 300px;
+    height: 275px;
+    border-radius: 10px;
+    flex-direction: column;
+    align-content: center;
+    text-align: center;
+}
+
+#courseTitle {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+#course p {
+  padding-bottom: 10px;
+}
+
+#buttons {
+  margin-top: 15px;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.btnAddDrop { 
+  margin: 5px 15px;
+  padding: 10px 15px;
+  font-weight: bold;
+  border-radius: 20px;
+  font-size: 13px;
+  background-color: white;
+
+}
+
+a {
+  color: black;
+  text-decoration: none;
 }

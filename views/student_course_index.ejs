@@ -22,34 +22,26 @@
                     <a href="/student_manage_courses">Manage Courses</a>
                 </div>
             </li>
-            <li><a href="/">Sign Out</a></li>
+            <li><a href="/" onclick="localStorage.clear()">Sign Out</a></li>
         </ul>
     </div>
 
-    <form id="studentIndexForm" method="GET" action="/student_course_index">
-        <h1 id="title">Course Listing</h1>
-        <div id="courseList"></div>
-    </form>
+  
+    <h1 id="title">Course Listing</h1>
+    <div id="courseList">  
+        <% courseArray.forEach(function(course) { %>
+            <div id="course">
+                <p id="courseTitle"><strong> <%= course.courseName %> </strong></p>
+                <p><strong>Subject Area:</strong> <%= course.courseSubject %></p>
+                <p><strong>Credits:</strong> <%= course.courseCredit %></p>
+                <p><strong>Description:</strong> <%= course.courseDescription %></p>
+                <div id="buttons">
+                    <button class="btnAddDrop"><a href="/student_dashboard">Add</a></button>
+                    <button class="btnAddDrop"><a href="/student_dashboard">Drop</a></button>
+                </div>
+            </div>
+        <% }); %>
+    </div>
 
-    <script src="../app.js"></script>
-    <script>
-        // instantiate blank html
-        let html = ""
-
-        // Add courses to html courses
-        for (let course of courses) {
-            html += 
-                `<div id="course">
-                    <p><strong>Name:</strong> ${course.name}</p>
-                    <p><strong>Subject Area:</strong> ${course.subject}</p>
-                    <p><strong>Credits:</strong> ${course.credits}</p>
-                    <p><strong>Descritpion:</strong> ${course.description}</p>
-                </div>`
-        }
-
-        // add html to document
-        document.querySelector("#courseList").innerHTML = html
-    </script>
 </body>
-
 </html>
