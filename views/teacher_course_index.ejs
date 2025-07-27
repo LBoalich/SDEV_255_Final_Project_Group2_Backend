@@ -22,15 +22,23 @@
                     <a href="/teacher_manage_courses">Manage Student Courses</a>
                 </div>
             </li>
-            <li><a href="/">Sign Out</a></li>
+            <li><a href="/" onclick="localStorage.clear()">Sign Out</a></li>
         </ul>
     </div>
 
-    <form id="teacherIndexForm" method="GET" action="/teacher_course_index">
-        <h1 id="title">Course Listing</h1>
-        <div id="courseList"></div>
-    </form>
-
-    <script src="../app.js"></script>
+    <h1 id="title">Course Listing</h1>
+    <div id="courseList">  
+        <% courseArray.forEach(function(course) { %>
+            <div id="course">
+                <p id="courseTitle"><strong> <%= course.courseName %> </strong></p>
+                <p><strong>Subject Area:</strong> <%= course.courseSubject %></p>
+                <p><strong>Credits:</strong> <%= course.courseCredit %></p>
+                <p><strong>Description:</strong> <%= course.courseDescription %></p>
+                <div id="buttons">
+                    <button class="btnAddDrop"><a href="/teacher_dashboard">Edit</a></button>
+                </div>
+            </div>
+        <% }); %>
+    </div>
 </body>
 </html>

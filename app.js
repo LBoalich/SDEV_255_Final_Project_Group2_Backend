@@ -212,13 +212,15 @@ app.get("/teacher_manage_courses", function (req, res) {
 });
 
 // show student course index
-app.get("/student_course_index", function (req, res) {
-    res.render("student_course_index");
+app.get("/student_course_index", async function (req, res) {
+    const courses = await Course.find({});
+    res.render("student_course_index", { courseArray: courses});
 });
 
 // show teacher course index
-app.get("/teacher_course_index", function (req, res) {
-    res.render("teacher_course_index");
+app.get("/teacher_course_index", async function (req, res) {
+    const courses = await Course.find({});
+    res.render("teacher_course_index", {courseArray: courses});
 });
 
 let port = process.env.PORT || 3000;
