@@ -7,6 +7,7 @@ const express = require("express"),
 
 const User = require("./model/User");
 const Course = require("./model/Courses");
+const Student = require("./model/Student");
 var path = require('path');
 let app = express();
 
@@ -221,6 +222,58 @@ app.get("/student_course_index", async function (req, res) {
 app.get("/teacher_course_index", async function (req, res) {
     const courses = await Course.find({});
     res.render("teacher_course_index", {courseArray: courses});
+});
+
+//showing single course
+app.get("/course/:id", async (req, res) => {
+    const course = await Course.findById(req.params.id);
+    res.render("course_detail", {course});
+});
+
+//edit
+app.get("/course/:id/edit", async (req, res) => {
+    const course = await Course.findById(req.params.id);
+    res.render("edit_course", {course});
+});
+
+//update
+app.get("/course/:id/edit", async (req, res) => {
+    await Course.findByIdAndUpdate(req.params.id, {
+        courseName: req.body.courseName,
+        courseDescription: req.body.courseDescription,
+        courseSubject: req.body.courseSubject,
+        courseCredit: req.body.courseCredit
+    });
+    res.redirect("/teacher_course_index");
+});
+
+//delete
+app.post("/courses/:id/delete", async (req, res) => {
+    await Course.findByIdAndDelete(req.params.id);
+    res.redirect("/teacher_course_index");
+});
+
+//add
+app.post("/student_course_index/add/:courseId", async (req, res) => {
+    const courseId = req.params.courseName;
+    const student = await Student.findOne({username: req.user.username});
+
+    if (!student.enrolledCourses.includes(courseId)) {
+        student.enrolledCourses.push(courseId);
+        await student.save();
+    }
+    res.redirect("/student_course_index");
+});
+
+//drop
+app.post("/student_course_index/drop/:courseId", async (req, res) => {
+   const courseId = req.params.courseName;
+   const student = await Student.findOne({username: req.user.username});
+
+   student.enrolledCourses = student.enrolledCourses.filter(id => id !== courseId);
+   await student.save();
+
+   res.redirect("/student_course_index");
 });
 
 let port = process.env.PORT || 3000;
