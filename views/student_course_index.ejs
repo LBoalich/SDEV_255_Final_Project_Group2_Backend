@@ -36,12 +36,28 @@
                 <p><strong>Credits:</strong> <%= course.courseCredit %></p>
                 <p><strong>Description:</strong> <%= course.courseDescription %></p>
                 <div id="buttons">
-                    <button class="btnAddDrop"><a href="/student_dashboard">Add</a></button>
-                    <button class="btnAddDrop"><a href="/student_dashboard">Drop</a></button>
+                    <form action="/add-cart:<%= course._id %>" method="POST">
+                        <input type="hidden" name="courseId" value="<%= course._id %>">
+                        <input type="hidden" name="studentName" id="studentName_<%= course._id %>" value="">
+                        <button id="addBtn" class="btnAddDrop" type="submit">ADD</button> 
+                    </form>
+                    <button id="dropBtn" class="btnAddDrop" data-courseId= "<%= course._id %>" ><a href="/student_dashboard">Drop</a></button>
                 </div>
             </div>
         <% }); %>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentUser = localStorage.getItem('user');
+            const courses = JSON.parse('<%- JSON.stringify(courseArray) %>');
+            for (let course of courses) {
+                let currentValue = "studentName_" + course._id;
+                let studentNameInput = document.getElementById(currentValue);
+                studentNameInput.value = currentUser;
+            };
+        });
+    </script>
 
 </body>
 </html>

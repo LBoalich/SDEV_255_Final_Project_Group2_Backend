@@ -118,6 +118,10 @@ li.dropdown {
   padding-bottom: 10px;
 }
 
+form {
+  display: inline-block;
+}
+
 #buttons {
   margin-top: 15px;
   flex-direction: row;

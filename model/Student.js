@@ -10,6 +10,10 @@ const studentSchema = new mongoose.Schema ({
     enrolledCourses: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course'
+    }],
+    cart: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course'
     }]
     // permission: {
     //     canEdit: {type: Boolean, default: false},
