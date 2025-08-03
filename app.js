@@ -8,6 +8,7 @@ const express = require("express"),
 const User = require("./model/User");
 const Course = require("./model/Courses");
 const Student = require("./model/Student");
+const Teacher = require("./model/Teacher");
 var path = require('path');
 let app = express();
 
@@ -38,6 +39,9 @@ app.engine('html', require('ejs').renderFile);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'views')));
 
+// Middleware to parse JSON body
+app.use(express.json()); 
+
 // Showing home page
 app.get("/", function (req, res) {
     res.render("home");
@@ -56,6 +60,25 @@ app.post("/register", async (req, res) => {
         password: req.body.password,
         teacherInputBox: req.body.teacherInputBox
     });
+        
+        const isTeacher = user.teacherInputBox;
+        if (isTeacher == "") {
+            const student = await Student.create({
+                _id: user._id,
+                studentName: user.username,
+                enrolledCourses: [],
+                cart: []
+            })
+        } else if (isTeacher == "pass") {
+            const teacher = await Teacher.create({
+                _id: user._id,
+                teacherName: user.username,
+                createdCourses: []
+            })
+        } else {
+            res.render('register', {message: "User not a student or teacher"});
+        } 
+     
 }
 catch (error) {
     if (error.code === 11000) {
@@ -170,8 +193,10 @@ app.get("/student_dashboard", function (req, res) {
     res.render("student_dashboard");
 });
 
-app.get("/student_manage_courses", function (req, res) {
-    res.render("student_manage_courses");
+app.get("/student_manage_courses", async function (req, res) {
+    const students = await Student.find({});
+    const courses = await Course.find({});
+    res.render("student_manage_courses", { students: students, courses: courses});
 });
 
 app.get("/teacher_login", function (req, res) {
@@ -215,7 +240,7 @@ app.get("/teacher_manage_courses", function (req, res) {
 // show student course index
 app.get("/student_course_index", async function (req, res) {
     const courses = await Course.find({});
-    res.render("student_course_index", { courseArray: courses});
+    res.render("student_course_index", { courseArray: courses });
 });
 
 // show teacher course index
@@ -253,6 +278,41 @@ app.post("/courses/:id/delete", async (req, res) => {
     res.redirect("/teacher_course_index");
 });
 
+//add to cart
+app.post("/add-cart:courseId", async (req, res) => {
+    try {
+        const courseId = req.body.courseId;
+        const studentName = req.body.studentName;
+        const student = await Student.findOne({studentName: studentName});
+
+        if (!student) {
+            return res.status(404).send('Student not found')
+        }
+
+        if (student.cart.includes(courseId)) {
+            res.send("Course already in cart")
+        } else {
+            student.cart.push(courseId);
+            await student.save();
+            res.redirect("/student_course_index");
+        }
+    } catch (error) {
+        console.log("Error adding course")
+    }
+});
+
+//drop
+app.post("/student_course_index/drop/:courseId", async (req, res) => {
+   const courseId = req.params.courseName;
+   const student = await Student.findOne({username: req.user.username});
+
+   student.cart = student.cart.filter(id => id !== courseId);
+   await student.save();
+
+   res.redirect("/student_course_index");
+});
+
+/* commenting out to update to use for registration since they finalize enrollment rather than add drop to cart
 //add
 app.post("/student_course_index/add/:courseId", async (req, res) => {
     const courseId = req.params.courseName;
@@ -275,7 +335,7 @@ app.post("/student_course_index/drop/:courseId", async (req, res) => {
 
    res.redirect("/student_course_index");
 });
-
+*/
 let port = process.env.PORT || 3000;
 app.listen(port, function () {
     console.log(`Server Has Started!  port:${port}`);
